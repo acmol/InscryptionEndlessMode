@@ -17,7 +17,7 @@ namespace HarderKCM
     {
         private const string PluginGuid = "acmol.kcm.harder";
         private const string PluginName = "Harder Kaycee's Mod";
-        private const string PluginVersion = "0.0.1";
+        private const string PluginVersion = "0.0.2";
 
         private void Awake()
         {

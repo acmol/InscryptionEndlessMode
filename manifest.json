@@ -1,6 +1,6 @@
 {
     "name": "HarderKCM",
-    "version_number": "0.0.1",
+    "version_number": "0.0.2",
     "website_url": "https://github.com/acmol/HarderKCM",
     "description": "Harder KCM",
     "dependencies": [
