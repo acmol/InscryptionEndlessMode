@@ -1,0 +1,9 @@
+{
+    "name": "ExampleMod",
+    "version_number": "0.0.1",
+    "website_url": "https://github.com/acmol/HarderKCM",
+    "description": "Harder KCM",
+    "dependencies": [
+        "BepInEx-BepInExPack_Inscryption-5.4.1701"
+    ]
+}
