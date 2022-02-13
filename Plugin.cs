@@ -28,7 +28,7 @@ namespace HarderKCM
                 Logger.LogInfo($"Load card {name} !");
                 if (card.name == "Squirrel") {
                     // speedup for testing 
-                    // set_card_info(card, 15, 15);
+                    //set_card_info(card, 15, 15);
                 }
             }
             Harmony harmony = new Harmony(PluginGuid);
