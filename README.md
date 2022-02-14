@@ -7,8 +7,8 @@ Harder challenges are here for you!
 For now, it's a simple plugin, just does one thing:
 
 The grizzies in boss level will be stronger.
-In the 2nd boss level, grizzies will have 2*Health & 2*Attak (which is 12 Health and 8 Attack).
-In the 3rd boss level, grizzies will have 3*Health & 3*Attak (which is 18 Health and 12 Attack).
+In the 2nd boss level, grizzies will have 2 * Health & 2 * Attak (which is 12 Health and 8 Attack).
+In the 3rd boss level, grizzies will have 3 * Health & 3 * Attak (which is 18 Health and 12 Attack).
 
 TODO:
 1. limitless regions support.
