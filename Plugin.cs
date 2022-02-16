@@ -15,9 +15,9 @@ namespace HarderKCM
     [BepInPlugin(PluginGuid, PluginName, PluginVersion)]
     public class API : BaseUnityPlugin
     {
-        private const string PluginGuid = "acmol.kcm.harder";
-        private const string PluginName = "Harder Kaycee's Mod";
-        private const string PluginVersion = "0.0.2";
+        private const string PluginGuid = "acmol.kcm.endless";
+        private const string PluginName = "Kaycee's Endless Mode";
+        private const string PluginVersion = "0.0.1";
 
         private void Awake()
         {
@@ -28,7 +28,7 @@ namespace HarderKCM
                 Logger.LogInfo($"Load card {name} !");
                 if (card.name == "Squirrel") {
                     // speedup for testing 
-                    //set_card_info(card, 15, 15);
+                    // set_card_info(card, 15, 15);
                 }
             }
             Harmony harmony = new Harmony(PluginGuid);
@@ -60,8 +60,32 @@ namespace HarderKCM
         // Every card will be called exactly once.
         public static event PlayableCardCallback OnCardEmergeOnBoardEvent;
 
+        public static int MaxDifficulty = 100;
+        public static int RepeatLevel = 3;
         private void Harder() {
+            // Grizzly is stronger now
             OnCardEmergeOnBoardEvent += GrizzlyModifier.Modify;
+
+            // support for endless levels
+            var regions = RegionProgression.Instance.regions;
+            foreach (var region in regions) {
+                foreach (var encounter in region.encounters) {
+                    encounter.maxDifficulty = MaxDifficulty;
+                    foreach (var turn in encounter.turns) {
+                        foreach(var card_blueprint in turn) {
+                            var min_difficulty = card_blueprint.DifficultyRange.x;
+                            var max_difficulty = card_blueprint.DifficultyRange.y;
+                            card_blueprint.DifficultyRange = new Vector2(min_difficulty, MaxDifficulty);
+                        }
+                    }
+                }
+            }
+
+            List<RegionData> to_insert = regions.GetRange(0, 3);
+            for (int i = 0 ; i < RepeatLevel - 1; ++i) {
+                regions.InsertRange(3, to_insert);
+            }
+            Log.LogInfo($"region count = {regions.Count()}");
         }
     }
 
@@ -109,4 +133,30 @@ namespace HarderKCM
             API.Log.LogInfo($"MODIFY END");
         }
     }
+
+    [HarmonyPatch(typeof(AscensionSaveData), "RollCurrentRunRegionOrder")]
+    class AscensionSaveData_RollCurrentRunRegionOrder{
+
+        private static List<int> GenRandomOrder(int n) {
+            List<int> source = new List<int>
+			{
+				n * 3,
+				n * 3 + 1,
+				n * 3 + 2
+			};
+            return new List<int>(from a in source
+                orderby UnityEngine.Random.Range(0, 100)
+                select a);
+        }
+        public static void Postfix(AscensionSaveData __instance) {
+            API.Log.LogInfo($"Roll Region Order");
+            List<int> order = new List<int>();
+            for (int i = 0; i != API.RepeatLevel; ++i) {
+                order.AddRange(GenRandomOrder(i));
+            }
+            __instance.currentRun.regionOrder = order.ToArray();
+            API.Log.LogInfo($"Roll Region Order {__instance.currentRun.regionOrder.Count()}");
+        }
+    }
+
 }

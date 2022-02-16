@@ -1,30 +1,47 @@
-# Harder Kaycee's Mode
+# EndlessMode for Inscryption Kaycee's Mod
 
-After turning on all the 14 challenges, you still think the game is too easy?
 
-Harder challenges are here for you!
+Want more levels? 
 
-For now, it's a simple plugin, just does one thing:
+Try this. Designed for Kaycee's Mode. 
+
+Kaycee's mode will have 10 regions (including Lethy's region). 
+
+After more testing for difficulty, endless levels will come.
+
+And harder challenges are here for you!
 
 The grizzies in boss level will be stronger.
 In the 2nd boss level, grizzies will have 2\*Health & 2\*Attak (which is 12 Health and 8 Attack).
 In the 3rd boss level, grizzies will have 3\*Health & 3\*Attak (which is 18 Health and 12 Attack).
+...
 
 TODO:
-1. limitless regions support.
+1. In boss level, more abilities will be added to the grazzlies and the hungers.
+2. limitless regions support
 
 
-# 凯茜的模组可以再难一点
+# 凯茜的模组无尽模式支持
 
-开启了14个挑战，你还感觉太简单？
-本模组专治各种不服。
-当前该模组，还很简单，只做了一件事儿：
+打完第三关，发现强力卡差了一点点没养成？意犹未尽？
 
-对Boss关的剧情杀灰熊大队做了增强：
-第2场Boss战里的灰熊大队的攻击、血量\*2，变成了8攻12血。
-第3场Boss战里的灰熊大队的攻击、血量\*3，变成了12攻18血。
+感觉全挑战也太简单？
+
+本Mod可以解决前述两个问题
+1. 将凯茜的模组改为10关 （9关普通关+1关莱茜关）
+2. 后边的Boss关的开启挑战14时的灰熊大队做了增强，第N场Boss战里的灰熊大队的攻击血量\*N，例如：
+第8场Boss战里的灰熊大队的攻击、血量\*8，变成了32攻48血。
+
+因此，本Mod开启灰熊挑战，难度将再上升一个等级。
 
 未来想做啥：
+1. 第4~5关灰熊挑战时，饥饿和灰熊将会增加毒属性；
+   第6~8关灰熊挑战时，将可能会出现以下几种加强之一：
+   * 饥饿出现防空属性
+   * 灰熊出现防毒属性
+   * 灰熊出现防剪刀属性
+   第9关灰熊挑战时，将会同时拥有前述三种属性。
+2. 月亮未来也可加强一下，还没想好怎么加。
+3. 可以配置开启无尽模式，生成无穷关，后边小怪和Boss战会变得越来越难，看你能打到第几关，不过这个估计还比较久，得先把数值平衡性做好。
 
-无尽模式，生成无穷关，后边小怪和Boss战会变得越来越难，看你能打到第几关。
 
