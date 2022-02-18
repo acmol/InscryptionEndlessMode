@@ -17,7 +17,7 @@ namespace HarderKCM
     {
         private const string PluginGuid = "acmol.kcm.endless";
         private const string PluginName = "Kaycee's Endless Mode";
-        private const string PluginVersion = "0.0.1";
+        private const string PluginVersion = "0.0.4";
 
         private void Awake()
         {
@@ -68,18 +68,7 @@ namespace HarderKCM
 
             // support for endless levels
             var regions = RegionProgression.Instance.regions;
-            foreach (var region in regions) {
-                foreach (var encounter in region.encounters) {
-                    encounter.maxDifficulty = MaxDifficulty;
-                    foreach (var turn in encounter.turns) {
-                        foreach(var card_blueprint in turn) {
-                            var min_difficulty = card_blueprint.DifficultyRange.x;
-                            var max_difficulty = card_blueprint.DifficultyRange.y;
-                            card_blueprint.DifficultyRange = new Vector2(min_difficulty, MaxDifficulty);
-                        }
-                    }
-                }
-            }
+            Log.LogInfo($"region count = {regions.Count()}");
 
             List<RegionData> to_insert = regions.GetRange(0, 3);
             for (int i = 0 ; i < RepeatLevel - 1; ++i) {
@@ -106,26 +95,65 @@ namespace HarderKCM
     }
 
     class GrizzlyModifier {
+
+        static public void starvation_add_reach(PlayableCard card) { 
+            if (card.Info.name == "Starvation") {
+                card.AddTemporaryMod(new CardModificationInfo(Ability.Reach));
+            }
+        }
+
+        static public void grizzly_add_stone(PlayableCard card) { 
+            if (card.Info.name == "Grizzly") {
+                card.AddTemporaryMod(new CardModificationInfo(Ability.MadeOfStone));
+            }
+        }
+
+        // static public void grizzly_add_uncutable(PlayableCard card) {
+        //     if (card.Info.name == "Grizzly") {
+        //         card.Info.traits.Add(Trait.Uncuttable);
+        //     }
+        // }
+
+        public delegate void CardModify(PlayableCard card);
+
         static public void Modify(ref PlayableCard card) {
             var info = card.Info;
             API.Log.LogInfo($"{info.name}:  isOpponent: {card.OpponentCard}");
-
-            if (RunState.Run.regionTier > RunState.Run.regionOrder.Count()) {
+            int level = RunState.Run.regionTier;
+            if (level > RunState.Run.regionOrder.Count()) {
                 // Final Boss
                 API.Log.LogInfo($"meet final boss");
                 return;
-            }
-
+            }            
+            
             var current_node = RunState.Run.map.nodeData.Find((NodeData x) => x.id == RunState.Run.currentNodeId);
+            var mod_func = new List<CardModify> {grizzly_add_stone, starvation_add_reach};
+
             if (current_node is BossBattleNodeData) {
                 // Boss Level
-                var n = RunState.CurrentRegionTier;
-                if (info.name == "Grizzly" && card.OpponentCard) {
-                    API.Log.LogInfo($"modify Grizzly");
-                    var mod = new CardModificationInfo(n * 4, n * 6);
-                    card.AddTemporaryMod(mod);
-                }
+                if (card.OpponentCard) {
+                    if (info.name == "Grizzly") {
+                        API.Log.LogInfo($"modify Grizzly");
+                        var mod = new CardModificationInfo(level * 4, level * 6);
+                        card.AddTemporaryMod(mod);
+                    }
+                    if (level >= 3 && level <= 4) {
+                        if (info.name == "Starvation" || info.name == "Grizzly") {
+                            card.AddTemporaryMod(new CardModificationInfo(Ability.Deathtouch));
+                        }
+                    }
 
+                    if (level >= 5 && level <= 7) {
+                        var mod = mod_func[UnityEngine.Random.Range(0, mod_func.Count())];
+                        mod(card);
+                    }
+
+                    if (level == 8) {
+                        foreach (var mod in mod_func) {
+                            mod(card);
+                        }
+                    }
+                }
             } else {
                 var type = current_node.GetType();
                 API.Log.LogInfo($"{type}");
@@ -157,6 +185,21 @@ namespace HarderKCM
             __instance.currentRun.regionOrder = order.ToArray();
             API.Log.LogInfo($"Roll Region Order {__instance.currentRun.regionOrder.Count()}");
         }
+    }
+
+    [HarmonyPatch(typeof(MapGenerator), "CreateNode")]
+    class MapGenerator_CreateNode{
+        public static void Postfix(ref NodeData __result) {
+            API.Log.LogInfo($"Run Create Node");
+
+            if (__result is CardBattleNodeData) {
+                 var battle_node = (CardBattleNodeData)__result;
+                 if (battle_node.difficulty > 15) {
+                    battle_node.difficulty = 15;
+                 }
+            }
+        }
+
     }
 
 }
