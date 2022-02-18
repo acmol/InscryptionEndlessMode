@@ -15,8 +15,8 @@ The grizzies in boss level will be stronger.
 In the 2nd boss level, grizzies will have 2\*Health & 2\*Attak (which is 12 Health and 8 Attack).
 In the 3rd boss level, grizzies will have 3\*Health & 3\*Attak (which is 18 Health and 12 Attack).
 ...
-in 4~5 levels, the grizzly and hunger will have deathtouch abillity.
-in 6~8 levels, 1 of these abillities will be added:
+in 4\~5 levels, the grizzly and hunger will have deathtouch abillity.
+in 6\~8 levels, 1 of these abillities will be added:
 
    * starvation will have Reach abillities, flying cards will not easily pass these levels.
    * grizzly will have Stone-Made abilities,  they will not fear about the DeathTouch cards.
