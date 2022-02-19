@@ -1,6 +1,6 @@
 {
     "name": "EndlessMode",
-    "version_number": "0.0.4",
+    "version_number": "0.0.5",
     "website_url": "https://github.com/acmol/InscryptionEndlessMode",
     "description": "Want more levels? Try this. Designed for Kaycee's Mode. Kaycee's mode will have 10 regions (including Lethy's region). After more testing for difficulty, endless levels will come.",
     "dependencies": [
