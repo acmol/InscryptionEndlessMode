@@ -17,7 +17,7 @@ namespace HarderKCM
     {
         private const string PluginGuid = "acmol.kcm.endless";
         private const string PluginName = "Kaycee's Endless Mode";
-        private const string PluginVersion = "0.0.7";
+        private const string PluginVersion = "0.0.8";
 
         private void Awake()
         {
@@ -286,7 +286,7 @@ namespace HarderKCM
     }
 
     // CopyCardNode now could be shown in new added levels
-    [HarmonyPatch(typeof(CopyCardNodeData), "GenerationPrerequisiteConditions")]
+    [HarmonyPatch(typeof(CopyCardNodeData), "GenerationPrerequisiteConditions", MethodType.Getter)]
     class CopyCardNodeData_GenerationPrerequisiteConditions {
         public static void Postfix(ref List<NodeData.SelectionCondition> __result) {
             for (int i = 0; i != __result.Count(); ++i) {

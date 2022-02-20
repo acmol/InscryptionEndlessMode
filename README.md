@@ -65,6 +65,12 @@ QQ群：342172536
 
 # Change Log
 
+## 0.0.8
+
+1. 修复了前一个修复造成的启动报错问题。抱歉测试少了。
+   
+   fixed a bug which is caused by the last bugfix. Sorry for lack of testing.
+
 ## 0.0.7
 
 1. 修复了新增关卡无法遇到复制卡片（画画）节点的bug。
