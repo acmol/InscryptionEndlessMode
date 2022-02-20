@@ -17,7 +17,7 @@ namespace HarderKCM
     {
         private const string PluginGuid = "acmol.kcm.endless";
         private const string PluginName = "Kaycee's Endless Mode";
-        private const string PluginVersion = "0.0.5";
+        private const string PluginVersion = "0.0.7";
 
         private void Awake()
         {
@@ -61,6 +61,11 @@ namespace HarderKCM
         public static event PlayableCardCallback OnCardEmergeOnBoardEvent;
 
         public static int RepeatLevel = 3;
+        public static int TotalLevel {
+            get {
+                return RepeatLevel * 3 + 1;
+            }
+        }
         private void Harder() {
             // Grizzly is stronger now
             OnCardEmergeOnBoardEvent += GrizzlyModifier.Modify;
@@ -96,15 +101,14 @@ namespace HarderKCM
     class GrizzlyModifier {
         public static void OnGrizzlyGlitchStart(int level) {
             _glitching = true;
-            noCutting = true;
             _level = level;
             currentModifies = new List<CardModify> {GrizzlyIncreaseStat};
             var mods = new List<CardModify>{GrizzlyAddStone, StarvationAddReach, AddNoCutting};;
             int n = level + 1;
-            if (n >= 4 && level <= 5) {
+            if (n >= 4 && n <= 5) {
                 currentModifies.Add(GrizzlyAndStarvationAddDeathTouch);
             } 
-            if (n >= 6 && level <= 8) {
+            if (n >= 6 && n <= 8) {
                 var mod = mods[UnityEngine.Random.Range(0, mods.Count())];
                 if (mod == AddNoCutting) {
                     noCutting = true;
@@ -277,6 +281,19 @@ namespace HarderKCM
             if (Part1BossOpponent_GrizzlyGlitchSequence.isGrizzlyGlitching) {
                 GrizzlyModifier.OnGrizzlyGlitchEnd();
                 Part1BossOpponent_GrizzlyGlitchSequence.isGrizzlyGlitching = false;
+            }
+        }
+    }
+
+    // CopyCardNode now could be shown in new added levels
+    [HarmonyPatch(typeof(CopyCardNodeData), "GenerationPrerequisiteConditions")]
+    class CopyCardNodeData_GenerationPrerequisiteConditions {
+        public static void Postfix(ref List<NodeData.SelectionCondition> __result) {
+            for (int i = 0; i != __result.Count(); ++i) {
+                var condition = __result[i];
+                if (condition is NodeData.WithinRegionIndexRange) {
+                    __result[i] = new NodeData.WithinRegionIndexRange(1, int.MaxValue);
+                }
             }
         }
     }
